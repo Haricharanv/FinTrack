@@ -9,7 +9,9 @@ permissions:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    # MongoDB 8 rejects the kernel used by the newer Ubuntu runners.
+    # Ubuntu 22.04 currently uses kernel 6.8; see docs/TESTING.md before upgrading.
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
     services:
       mongodb:

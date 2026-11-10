@@ -41,6 +41,14 @@ The integration suite in `backend/tests/finance.test.ts` uses real MongoDB and E
 
 Each run creates a unique test database and removes only that database after completion. The local development database is never reset by tests.
 
+## GitHub runner compatibility
+
+The initial GitHub run stopped before checkout because the MongoDB 8 service refused to start on the runner's Linux kernel. MongoDB documents a TCMalloc incompatibility with Linux 6.19 through 7.0.13, including Docker deployments: [MongoDB production notes](https://www.mongodb.com/docs/manual/administration/production-notes/).
+
+CI pins `ubuntu-22.04`, whose published runner image currently uses Linux 6.8, while retaining MongoDB 8 and every application check. The Ubuntu 24.04 image currently uses a 7.0-based kernel, so pinning only to 24.04 does not avoid the problem. See the [Ubuntu 22.04 runner manifest](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md) and [Ubuntu 24.04 manifest](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md).
+
+This is a temporary compatibility pin. Revisit it before [Ubuntu 22.04 runner retirement](https://github.com/actions/runner-images/issues/14254), once a newer runner and MongoDB image combination passes the full workflow. Do not bypass MongoDB's startup guard or skip the database tests.
+
 ## Browser checklist
 
 - [x] Demo login opens an isolated, labeled MongoDB workspace.
