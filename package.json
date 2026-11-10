@@ -1,0 +1,25 @@
+{
+  "name": "fintrack",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c green,cyan \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "npm run build -w frontend && npm run build -w backend",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test -w backend",
+    "start": "npm run start -w backend",
+    "format": "prettier --write frontend/src backend/src backend/tests docs design-system *.json *.md frontend/*.json frontend/*.ts backend/*.json"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "prettier": "3.9.10",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}
